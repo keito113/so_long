@@ -6,10 +6,11 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 09:24:47 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/21 10:22:13 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/22 09:14:21 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/libft.h"
 #include "map_parser.h"
 
 void	error_exit(const char *msg)

@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 13:27:25 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/21 11:02:21 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/22 09:11:56 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,17 @@ t_map	*read_map(const char *filename)
 {
 	t_map	*map;
 
+	if (!check_filename(filename))
+		error_exit("Invalid file extension");
 	map = malloc(sizeof(t_map));
 	if (!map)
 		error_exit("Memory allocation failed");
-	if (!check_filename(filename))
-		error_exit("Invalid file extension");
 	map->height = count_lines(filename);
 	map->width = check_width(filename, -1);
 	map->date = alloc_map(map->height, map->width);
 	fill_map(filename, map);
+	validate_chars(map);
+	validate_border(map);
+	validate_elements(map);
 	return (map);
 }
