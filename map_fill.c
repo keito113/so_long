@@ -6,11 +6,11 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 09:33:33 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/21 11:38:50 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/29 08:20:27 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "map_parser.h"
+#include "so_long.h"
 
 static void	free_map(char **arr, int n)
 {

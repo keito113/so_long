@@ -6,11 +6,11 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 11:23:12 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/25 11:40:22 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/29 12:58:11 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "graphics.h"
+#include "so_long.h"
 
 void	draw_move_count(t_context *ctx)
 {
@@ -25,6 +25,8 @@ void	draw_move_count(t_context *ctx)
 
 static void	apply_move(int new_x, int new_y, t_context *ctx)
 {
+	if (ctx->map->date[new_y][new_x] == 'E' && ctx->collectable > 0)
+		return ;
 	if (ctx->map->date[new_y][new_x] == 'C')
 	{
 		ctx->collectable--;
@@ -36,11 +38,15 @@ static void	apply_move(int new_x, int new_y, t_context *ctx)
 			0x00FFFFFF, "Have a great camping trip!!");
 		cleanup_graphics(ctx);
 	}
+	if (ctx->map->date[new_y][new_x] == 'X')
+		handle_enemy_collision(ctx);
 	ctx->map->date[ctx->player_y][ctx->player_x] = '0';
 	ctx->map->date[new_y][new_x] = 'P';
 	ctx->player_x = new_x;
 	ctx->player_y = new_y;
 	ctx->moves++;
+	ft_putnbr_fd(ctx->moves, 1);
+	ft_putchar_fd('\n', 1);
 	mlx_clear_window(ctx->mlx_ptr, ctx->win_ptr);
 	render_map(ctx->mlx_ptr, ctx->win_ptr, ctx->map, ctx->tx);
 	draw_move_count(ctx);

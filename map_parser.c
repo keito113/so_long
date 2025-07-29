@@ -6,12 +6,11 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 13:27:25 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/22 09:11:56 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/29 08:20:15 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-#include "map_parser.h"
+#include "so_long.h"
 
 static int	check_filename(const char *filename)
 {
@@ -90,5 +89,6 @@ t_map	*read_map(const char *filename)
 	validate_chars(map);
 	validate_border(map);
 	validate_elements(map);
+	validate_path(map);
 	return (map);
 }

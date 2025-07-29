@@ -6,12 +6,11 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 09:24:47 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/22 09:14:21 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/29 08:19:07 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-#include "map_parser.h"
+#include "so_long.h"
 
 void	error_exit(const char *msg)
 {

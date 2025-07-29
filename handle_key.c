@@ -6,11 +6,11 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:01:02 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/25 06:51:24 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/29 12:57:39 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "graphics.h"
+#include "so_long.h"
 
 void	cleanup_graphics(t_context *ctx)
 {
@@ -65,4 +65,11 @@ void	handle_events(t_context *ctx)
 	mlx_hook(ctx->win_ptr, KeyPress, KeyPressMask, on_keypress, ctx);
 	mlx_hook(ctx->win_ptr, DestroyNotify, StructureNotifyMask, on_destroy, ctx);
 	mlx_loop(ctx->mlx_ptr);
+}
+
+void	handle_enemy_collision(t_context *ctx)
+{
+	ft_putstr_fd("Game Over!\n", 1);
+	cleanup_graphics(ctx);
+	exit(0);
 }

@@ -6,11 +6,11 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:21:53 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/25 11:18:43 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/29 13:00:15 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "graphics.h"
+#include "so_long.h"
 
 void	init_graphics(void **mlx_ptr, void **win_ptr, int width, int height)
 {
@@ -45,6 +45,9 @@ void	load_textures(void *mlx_ptr, t_textures *tx)
 			&w, &h);
 	if (!tx->collectible)
 		error_exit("Collectible image loading failure");
+	tx->enemy = mlx_xpm_file_to_image(mlx_ptr, "textures/enemy.xpm", &w, &h);
+	if (!tx->enemy)
+		error_exit("Enemy image loading failure");
 }
 
 static void	*get_tex_ptr(char c, t_textures *tx)
@@ -59,6 +62,8 @@ static void	*get_tex_ptr(char c, t_textures *tx)
 		return (tx->exit);
 	if (c == 'P')
 		return (tx->player);
+	if (c == 'X')
+		return (tx->enemy);
 	error_exit("Invalid map char");
 	return (NULL);
 }
