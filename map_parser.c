@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 13:27:25 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/29 08:20:15 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/30 15:02:16 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static ssize_t	process_width_stream(int fd, int *result_width)
 	int		current_width;
 
 	current_width = 0;
-	while ((bytes_read = read(fd, &buf, 1)) > 0)
+	bytes_read = read(fd, &buf, 1);
+	while (bytes_read > 0)
 	{
 		if (buf == '\n')
 		{
@@ -48,6 +49,7 @@ static ssize_t	process_width_stream(int fd, int *result_width)
 		}
 		else
 			current_width++;
+		bytes_read = read(fd, &buf, 1);
 	}
 	if (bytes_read == -1)
 		return (-1);

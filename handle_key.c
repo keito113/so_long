@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:01:02 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/29 12:57:39 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/30 13:50:14 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,19 @@ void	handle_events(t_context *ctx)
 	mlx_loop(ctx->mlx_ptr);
 }
 
-void	handle_enemy_collision(t_context *ctx)
+int	handle_enemy_collision(int x, int y, t_context *ctx)
 {
-	ft_putstr_fd("Game Over!\n", 1);
-	cleanup_graphics(ctx);
-	exit(0);
+	int	i;
+
+	i = 0;
+	while (i < ctx->enemy_count)
+	{
+		if (ctx->enemies[i].x == x && ctx->enemies[i].y == y)
+		{
+			handle_end(ctx, "textures/game_over.xpm", "Game Over");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }

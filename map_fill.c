@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 09:33:33 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/29 08:20:27 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/30 15:02:30 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ static ssize_t	fill_loop(int fd, t_map *map)
 
 	row = 0;
 	col = 0;
-	while ((bytes = read(fd, &c, 1)) > 0)
+	bytes = read(fd, &c, 1);
+	while (bytes > 0)
 	{
 		if (c == '\n')
 		{
@@ -66,10 +67,11 @@ static ssize_t	fill_loop(int fd, t_map *map)
 		else
 		{
 			if (row >= map->height || col >= map->width)
-				error_exit("Map dimensions mismatch");
+			error_exit("Map dimensions mismatch");
 			map->date[row][col] = c;
 			col++;
 		}
+		bytes = read(fd, &c, 1);
 	}
 	return (bytes);
 }

@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 09:20:44 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/29 12:46:25 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/30 14:54:03 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	validate_chars(const t_map *map)
 		while (col < map->width)
 		{
 			c = map->date[row][col];
-			if (c != '0' && c != '1' && c != 'C' && c != 'E' && c != 'P' && c != 'X')
+			if (c != '0' && c != '1' && c != 'C' && c != 'E' && c != 'P'
+				&& c != 'X')
 				error_exit("Map character error");
 			col++;
 		}

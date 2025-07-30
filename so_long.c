@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 07:43:35 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/29 11:20:38 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/30 13:04:18 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	main(int ac, char *av[])
 	init_player_pos(&ctx);
 	render_map(ctx.mlx_ptr, ctx.win_ptr, map, &tx);
 	draw_move_count(&ctx);
+	mlx_loop_hook(ctx.mlx_ptr, enemy_loop_hook, &ctx);
 	handle_events(&ctx);
 	return (0);
 }

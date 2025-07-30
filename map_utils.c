@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 09:24:47 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/29 08:19:07 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/30 15:02:47 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,12 @@ int	count_lines(const char *filename)
 	if (fd == -1)
 		error_exit("Cannot open file");
 	lines = 0;
-	while ((bytes_read = read(fd, &buf, 1)) > 0)
+	bytes_read = read(fd, &buf, 1);
+	while (bytes_read > 0)
 	{
 		if (buf == '\n')
 			lines++;
+		bytes_read = read(fd, &buf, 1);
 	}
 	if (bytes_read == -1)
 		error_exit("Error reading file");
