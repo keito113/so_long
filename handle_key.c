@@ -6,31 +6,11 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:01:02 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/30 13:50:14 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/31 11:48:42 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-void	cleanup_graphics(t_context *ctx)
-{
-	void		*mlx_ptr;
-	void		*win_ptr;
-	t_textures	*tx;
-
-	mlx_ptr = ctx->mlx_ptr;
-	win_ptr = ctx->win_ptr;
-	tx = ctx->tx;
-	mlx_destroy_image(mlx_ptr, tx->floor);
-	mlx_destroy_image(mlx_ptr, tx->player);
-	mlx_destroy_image(mlx_ptr, tx->exit);
-	mlx_destroy_image(mlx_ptr, tx->wall);
-	mlx_destroy_image(mlx_ptr, tx->collectible);
-	mlx_destroy_window(mlx_ptr, win_ptr);
-	mlx_destroy_display(mlx_ptr);
-	free(mlx_ptr);
-	exit(0);
-}
 
 int	on_keypress(int keycode, void *param)
 {
@@ -50,13 +30,9 @@ int	on_keypress(int keycode, void *param)
 	return (0);
 }
 
-int	on_destroy(int unused, void *param)
+int	on_destroy(void *param)
 {
-	t_context	*ctx;
-
-	(void)unused;
-	ctx = (t_context *)param;
-	cleanup_graphics(ctx);
+	cleanup_graphics((t_context *)param);
 	return (0);
 }
 

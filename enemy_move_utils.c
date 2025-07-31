@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 13:20:14 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/30 13:54:45 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/31 15:09:31 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,16 @@
 
 int	rng_next(t_context *ctx)
 {
-	ctx->rng.seed = ctx->rng.seed * 1103515245 + 12345;
+	long long	tmp;
+	int			a;
+	int			b;
+
+	a = 1103515245;
+	b = 12345;
+	tmp = (long long)ctx->rng.seed * a + b;
+	if (tmp < INT_MIN || tmp > INT_MAX)
+		error_exit("rng_next: seed overflow detected");
+	ctx->rng.seed = (int)tmp;
 	return (ctx->rng.seed);
 }
 

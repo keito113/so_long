@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 07:58:52 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/30 14:12:05 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/07/31 15:06:49 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <X11/Xlib.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <mlx.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -122,7 +123,7 @@ void			render_map(void *mlx_ptr, void *win_ptr, t_map *map,
 					t_textures *tx);
 void			cleanup_graphics(t_context *ctx);
 int				on_keypress(int keycode, void *param);
-int				on_destroy(int unused, void *param);
+int				on_destroy(void *param);
 void			handle_events(t_context *ctx);
 int				handle_enemy_collision(int x, int y, t_context *ctx);
 void			move_player(int dx, int dy, t_context *ctx);
