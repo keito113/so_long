@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 10:49:16 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/31 10:57:29 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/26 12:43:12 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,16 @@ void	cleanup_graphics(t_context *ctx)
 
 	mlx_ptr = ctx->mlx_ptr;
 	win_ptr = ctx->win_ptr;
-	destroy_textures(mlx_ptr, ctx->tx);
+	if (ctx->end.img_ptr || ctx->end.win_ptr)
+		cleanup_gameover(mlx_ptr, &ctx->end);
 	if (win_ptr)
 		mlx_destroy_window(mlx_ptr, win_ptr);
+	destroy_textures(mlx_ptr, ctx->tx);
 	if (mlx_ptr)
+	{
 		mlx_destroy_display(mlx_ptr);
+		free(mlx_ptr);
+	}
 	if (ctx->map)
 		free_map_date(ctx->map);
 	if (ctx->enemies)

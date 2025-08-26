@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 07:18:22 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/29 09:23:35 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/26 09:13:19 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,29 @@ static char	**copy_map(char **src, int height, int width)
 	return (copy);
 }
 
-static void	flood_fill(t_scan_map *ctx, int x, int y)
+static void	flood_fill(t_scan_map *ctx, int x, int y, int allow_exit)
 {
+	char	c;
+
 	if (x < 0 || x >= ctx->width || y < 0 || y >= ctx->height)
 		return ;
-	if (ctx->map[y][x] == '1' || ctx->map[y][x] == 'V')
+	c = ctx->map[y][x];
+	if (c == 'V' || c == '1' || c == 'X')
 		return ;
-	if (ctx->map[y][x] == '0' || ctx->map[y][x] == 'C' || ctx->map[y][x] == 'E'
-		|| ctx->map[y][x] == 'P')
+	if (c == 'E')
+	{
+		if (!allow_exit)
+			return ;
 		ctx->map[y][x] = 'V';
-	flood_fill(ctx, x + 1, y);
-	flood_fill(ctx, x - 1, y);
-	flood_fill(ctx, x, y + 1);
-	flood_fill(ctx, x, y - 1);
+	}
+	else if (c == '0' || c == 'C' || c == 'P')
+		ctx->map[y][x] = 'V';
+	else
+		return ;
+	flood_fill(ctx, x + 1, y, allow_exit);
+	flood_fill(ctx, x - 1, y, allow_exit);
+	flood_fill(ctx, x, y + 1, allow_exit);
+	flood_fill(ctx, x, y - 1, allow_exit);
 }
 
 static void	count_remaining(t_scan_map *ctx, int *c_cnt, int *e_cnt)
@@ -107,13 +117,21 @@ void	validate_path(const t_map *map)
 	int			e_cnt;
 	t_scan_map	ctx;
 
+	find_player_position(map, &px, &py);
 	ctx.map = copy_map(map->date, map->height, map->width);
 	ctx.width = map->width;
 	ctx.height = map->height;
-	find_player_position(map, &px, &py);
-	flood_fill(&ctx, px, py);
+	flood_fill(&ctx, px, py, 0);
 	count_remaining(&ctx, &c_cnt, &e_cnt);
 	free(ctx.map);
-	if (c_cnt > 0 || e_cnt > 0)
-		error_exit("No valid path");
+	if (c_cnt > 0)
+		error_exit("No valid path(collectibles unreachable)");
+	ctx.map = copy_map(map->date, map->height, map->width);
+	ctx.width = map->width;
+	ctx.height = map->height;
+	flood_fill(&ctx, px, py, 1);
+	count_remaining(&ctx, &c_cnt, &e_cnt);
+	free(ctx.map);
+	if (e_cnt > 0)
+		error_exit("No valid path (exit unreachable)");
 }

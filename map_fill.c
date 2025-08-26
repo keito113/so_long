@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 09:33:33 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/30 15:02:30 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/25 09:11:49 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static ssize_t	fill_loop(int fd, t_map *map)
 		else
 		{
 			if (row >= map->height || col >= map->width)
-			error_exit("Map dimensions mismatch");
+				error_exit("Map dimensions mismatch");
 			map->date[row][col] = c;
 			col++;
 		}

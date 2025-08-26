@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:01:02 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/31 11:48:42 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/25 12:06:52 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	on_keypress(int keycode, void *param)
 	t_context	*ctx;
 
 	ctx = param;
+	if (ctx->end.win_ptr)
+		return (0);
 	if (keycode == KEY_ESC)
 		cleanup_graphics(ctx);
 	else if (keycode == KEY_W)

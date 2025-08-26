@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 13:20:14 by keitabe           #+#    #+#             */
-/*   Updated: 2025/08/16 09:58:13 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/26 12:36:33 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,15 @@ void	fill_enemies(t_context *ctx)
 
 void	move_one_enemy(t_context *ctx, int idx)
 {
-	int	r;
 	int	dir;
 	int	nx;
 	int	ny;
 
-	r = rng_next(ctx);
-	dir = (r >> 16) & 3;
+	dir = (rng_next(ctx) >> 16) & 3;
 	nx = ctx->enemies[idx].x + (dir == 0) - (dir == 1);
 	ny = ctx->enemies[idx].y + (dir == 2) - (dir == 3);
+	if (nx < 0 || nx >= ctx->map->width || ny < 0 || ny >= ctx->map->height)
+		return ;
 	if (ctx->map->date[ny][nx] == 'P')
 	{
 		handle_end(ctx, "textures/game_over.xpm", "Game Over");

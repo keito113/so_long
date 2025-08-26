@@ -6,55 +6,40 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 10:18:57 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/30 10:50:48 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/26 07:33:38 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	cleanup_gameover(void *mlx_ptr, t_gameover *go)
+void	cleanup_gameover(void *mlx_ptr, t_end *go)
 {
-	mlx_destroy_image(mlx_ptr, go->img_ptr);
-	mlx_destroy_window(mlx_ptr, go->win_ptr);
-}
-
-int	read_uptime_seconds(void)
-{
-	int		fd;
-	ssize_t	n;
-	char	buf[32];
-	int		sec;
-	int		i;
-
-	fd = open("/proc/uptime", O_RDONLY);
-	if (fd < 0)
-		error_exit("open /proc/uptime failed");
-	n = read(fd, buf, sizeof(buf) - 1);
-	if (n <= 0)
-		error_exit("read /proc/uptime failed");
-	buf[n] = '\0';
-	sec = 0;
-	i = 0;
-	while (buf[i] >= '0' && buf[i] <= '9')
+	if (go->img_ptr)
 	{
-		sec = sec * 10 + (buf[i] - '0');
-		i++;
+		mlx_destroy_image(mlx_ptr, go->img_ptr);
+		go->img_ptr = NULL;
 	}
-	close(fd);
-	return (sec);
+	if (go->win_ptr)
+	{
+		mlx_destroy_window(mlx_ptr, go->win_ptr);
+		go->win_ptr = NULL;
+	}
 }
 
 int	timeout_hook(void *param)
 {
-	t_context	*ctx;
-	t_gameover	*go;
+	t_context		*ctx;
+	t_end			*go;
+	struct timeval	now;
+	long			sec_diff;
 
 	ctx = (t_context *)param;
-	go = &ctx->gameover;
-	if (read_uptime_seconds() - go->start_sec >= 3)
-	{
-		cleanup_gameover(ctx->mlx_ptr, go);
-		exit(0);
-	}
+	go = &ctx->end;
+	if (gettimeofday(&now, NULL) < 0)
+		return (0);
+	sec_diff = (long)(now.tv_sec - go->start_tv.tv_sec);
+	if ((sec_diff > (long)go->wait_time) || (sec_diff == (long)go->wait_time
+			&& now.tv_usec >= go->start_tv.tv_usec))
+		cleanup_graphics(ctx);
 	return (0);
 }
