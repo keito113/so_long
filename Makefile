@@ -6,7 +6,7 @@
 #    By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/29 09:18:03 by keitabe           #+#    #+#              #
-#    Updated: 2025/07/31 11:11:53 by keitabe          ###   ########.fr        #
+#    Updated: 2025/08/29 12:28:33 by keitabe          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,9 @@ MLX_LIB     = $(MLX_DIR)/libmlx.a
 
 INCLUDES    = -I. -I$(LIBFT_DIR) -I$(MLX_DIR)
 
-SRCS        = so_long.c map_parser.c map_fill.c map_utils.c map_validator.c validate_path.c graphics.c movement.c handle_key.c game_end.c game_end_utils.c enemy_move.c enemy_move_utils.c cleanup_graphics.c
+SRCS        = so_long.c map_parser.c map_fill.c map_utils.c map_validator.c validate_path.c graphics.c movement.c handle_key.c game_end.c game_end_utils.c enemy_move.c enemy_move_utils.c cleanup_graphics.c handle_error.c textures.c
 
-OBJS        = so_long.o map_parser.o map_fill.o map_utils.o map_validator.o validate_path.o graphics.o movement.o handle_key.o game_end.o game_end_utils.o enemy_move.o enemy_move_utils.o cleanup_graphics.o
+OBJS        = so_long.o map_parser.o map_fill.o map_utils.o map_validator.o validate_path.o graphics.o movement.o handle_key.o game_end.o game_end_utils.o enemy_move.o enemy_move_utils.o cleanup_graphics.o handle_error.o textures.o
 
 
 all: $(NAME)

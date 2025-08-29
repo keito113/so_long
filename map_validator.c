@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 09:20:44 by keitabe           #+#    #+#             */
-/*   Updated: 2025/07/30 14:54:03 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/29 12:28:22 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	validate_chars(const t_map *map)
 			c = map->date[row][col];
 			if (c != '0' && c != '1' && c != 'C' && c != 'E' && c != 'P'
 				&& c != 'X')
-				error_exit("Map character error");
+				die_map(map, ERR_GENERIC, "Map character error");
 			col++;
 		}
 		row++;
@@ -43,20 +43,16 @@ void	validate_border(const t_map *map)
 	col = map->width - 1;
 	while (row < map->height)
 	{
-		if (map->date[row][0] != '1')
-			error_exit("Not surrounded by walls");
-		if (map->date[row][col] != '1')
-			error_exit("Not surrounded by walls");
+		if (map->date[row][0] != '1' || map->date[row][col] != '1')
+			die_map(map, ERR_MAP_BORDER, "Not surrounded by walls");
 		row++;
 	}
 	col = 0;
 	row = map->height - 1;
 	while (col < map->width)
 	{
-		if (map->date[0][col] != '1')
-			error_exit("Not surrounded by walls");
-		if (map->date[row][col] != '1')
-			error_exit("Not surrounded by walls");
+		if (map->date[0][col] != '1' || map->date[row][col] != '1')
+			die_map(map, ERR_MAP_BORDER, "Not surrounded by walls");
 		col++;
 	}
 }
@@ -93,9 +89,9 @@ void	validate_elements(const t_map *map)
 	e_count = element_count(map, 'E');
 	c_count = element_count(map, 'C');
 	if (p_count != 1)
-		error_exit("Player starting position is incorrect");
+		die_map(map, ERR_MAP_PEC, "Player starting position is incorrect");
 	if (e_count != 1)
-		error_exit("Map exit is incorrect");
+		die_map(map, ERR_MAP_PEC, "Map exit is incorrect");
 	if (c_count < 1)
-		error_exit("Not enough collectibles");
+		die_map(map, ERR_MAP_PEC, "Not enough collectibles");
 }

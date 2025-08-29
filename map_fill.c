@@ -6,13 +6,13 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 09:33:33 by keitabe           #+#    #+#             */
-/*   Updated: 2025/08/25 09:11:49 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/29 12:28:30 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static void	free_map(char **arr, int n)
+static void	free_rows(char **arr, int n)
 {
 	while (n > 0)
 	{
@@ -28,18 +28,18 @@ char	**alloc_map(int height, int width)
 	int		i;
 
 	if (height <= 0 || width <= 0)
-		error_exit("Invalid map dimensions");
+		fatal(NULL, ERR_MAP_RECT, "Invalid map dimensions");
 	map = malloc(sizeof(char *) * height);
 	if (!map)
-		error_exit("Memory allocation failed");
+		fatal(NULL, ERR_ALLOC, "Memory allocation failed");
 	i = 0;
 	while (i < height)
 	{
 		map[i] = malloc(width + 1);
 		if (!map[i])
 		{
-			free_map(map, i);
-			error_exit("Memory allocation failed");
+			free_rows(map, i);
+			fatal(NULL, ERR_ALLOC, "Memory allocation failed");
 		}
 		map[i][width] = '\0';
 		i++;
@@ -67,7 +67,7 @@ static ssize_t	fill_loop(int fd, t_map *map)
 		else
 		{
 			if (row >= map->height || col >= map->width)
-				error_exit("Map dimensions mismatch");
+				fatal_map(&map, ERR_MAP_RECT, "Map dimensions mismatch");
 			map->date[row][col] = c;
 			col++;
 		}
@@ -83,9 +83,10 @@ void	fill_map(const char *filename, t_map *map)
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		error_exit("Cannot open file");
+		fatal_map(&map, ERR_SYS_OPEN, filename);
 	bytes = fill_loop(fd, map);
-	close(fd);
+	if (close(fd) == -1)
+		fatal_map(&map, ERR_SYS_CLOSE, filename);
 	if (bytes == -1)
-		error_exit("Read error");
+		fatal_map(&map, ERR_SYS_READ, filename);
 }

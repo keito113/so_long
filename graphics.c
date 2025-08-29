@@ -6,48 +6,20 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:21:53 by keitabe           #+#    #+#             */
-/*   Updated: 2025/08/26 14:15:12 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/29 12:28:39 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	init_graphics(void **mlx_ptr, void **win_ptr, int width, int height)
+void	init_graphics(t_context *ctx, int width, int height)
 {
-	*mlx_ptr = mlx_init();
-	if (!*mlx_ptr)
-		error_exit("Mlx initialization failure");
-	*win_ptr = mlx_new_window(*mlx_ptr, width, height, "so_long");
-	if (!*win_ptr)
-		error_exit("Window creation failure");
-}
-
-void	load_textures(void *mlx_ptr, t_textures *tx)
-{
-	int	w;
-	int	h;
-
-	tx->floor = mlx_xpm_file_to_image(mlx_ptr, "textures/floor.xpm", &w, &h);
-	if (!tx->floor)
-		error_exit("Floor image loading failure");
-	tx->tile_w = w;
-	tx->tile_h = h;
-	tx->player = mlx_xpm_file_to_image(mlx_ptr, "textures/player.xpm", &w, &h);
-	if (!tx->player)
-		error_exit("Player image loading failure");
-	tx->wall = mlx_xpm_file_to_image(mlx_ptr, "textures/wall.xpm", &w, &h);
-	if (!tx->wall)
-		error_exit("Wall image loading failure");
-	tx->exit = mlx_xpm_file_to_image(mlx_ptr, "textures/exit.xpm", &w, &h);
-	if (!tx->exit)
-		error_exit("Exit image loading failure");
-	tx->collectible = mlx_xpm_file_to_image(mlx_ptr, "textures/collectible.xpm",
-			&w, &h);
-	if (!tx->collectible)
-		error_exit("Collectible image loading failure");
-	tx->enemy = mlx_xpm_file_to_image(mlx_ptr, "textures/enemy.xpm", &w, &h);
-	if (!tx->enemy)
-		error_exit("Enemy image loading failure");
+	ctx->mlx_ptr = mlx_init();
+	if (!ctx->mlx_ptr)
+		fatal(ctx, ERR_MLX_INIT, "Mlx initialization failure");
+	ctx->win_ptr = mlx_new_window(ctx->mlx_ptr, width, height, "so_long");
+	if (!ctx->win_ptr)
+		fatal(ctx, ERR_MLX_WIN, "Window creation failure");
 }
 
 static void	*get_tex_ptr(char c, t_textures *tx)
@@ -64,7 +36,6 @@ static void	*get_tex_ptr(char c, t_textures *tx)
 		return (tx->player);
 	if (c == 'X')
 		return (tx->enemy);
-	error_exit("Invalid map char");
 	return (NULL);
 }
 

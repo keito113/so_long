@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 07:18:22 by keitabe           #+#    #+#             */
-/*   Updated: 2025/08/26 09:13:19 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/29 12:28:14 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	find_player_position(const t_map *map, int *px, int *py)
 		}
 		y++;
 	}
-	error_exit("Player position not found");
+	die_map(map, ERR_MAP_PEC, "Player position not found");
 }
 
 static char	**copy_map(char **src, int height, int width)
@@ -48,7 +48,7 @@ static char	**copy_map(char **src, int height, int width)
 	buf_size = (size_t)height * (width + 1);
 	copy = malloc(ptr_size + buf_size);
 	if (!copy)
-		error_exit("Copy map allocation failed");
+		fatal(NULL, ERR_ALLOC, "Copy map allocation failed");
 	date = (char *)(copy + height);
 	i = 0;
 	while (i < height)
@@ -118,20 +118,18 @@ void	validate_path(const t_map *map)
 	t_scan_map	ctx;
 
 	find_player_position(map, &px, &py);
-	ctx.map = copy_map(map->date, map->height, map->width);
 	ctx.width = map->width;
 	ctx.height = map->height;
+	ctx.map = copy_map(map->date, map->height, map->width);
 	flood_fill(&ctx, px, py, 0);
 	count_remaining(&ctx, &c_cnt, &e_cnt);
 	free(ctx.map);
 	if (c_cnt > 0)
-		error_exit("No valid path(collectibles unreachable)");
+		die_map(map, ERR_MAP_PATH, "No valid path(collectibles unreachable)");
 	ctx.map = copy_map(map->date, map->height, map->width);
-	ctx.width = map->width;
-	ctx.height = map->height;
 	flood_fill(&ctx, px, py, 1);
 	count_remaining(&ctx, &c_cnt, &e_cnt);
 	free(ctx.map);
 	if (e_cnt > 0)
-		error_exit("No valid path (exit unreachable)");
+		die_map(map, ERR_MAP_PATH, "No valid path (exit unreachable)");
 }

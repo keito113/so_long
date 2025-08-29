@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:01:02 by keitabe           #+#    #+#             */
-/*   Updated: 2025/08/25 12:06:52 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/29 12:28:35 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@ int	on_keypress(int keycode, void *param)
 {
 	t_context	*ctx;
 
-	ctx = param;
+	ctx = (t_context *)param;
 	if (ctx->end.win_ptr)
 		return (0);
 	if (keycode == KEY_ESC)
-		cleanup_graphics(ctx);
+	{
+		app_destroy(ctx);
+		exit(0);
+	}
 	else if (keycode == KEY_W)
 		move_player(0, -1, ctx);
 	else if (keycode == KEY_A)
@@ -34,7 +37,11 @@ int	on_keypress(int keycode, void *param)
 
 int	on_destroy(void *param)
 {
-	cleanup_graphics((t_context *)param);
+	t_context	*ctx;
+
+	ctx = (t_context *)param;
+	app_destroy(ctx);
+	exit(0);
 	return (0);
 }
 

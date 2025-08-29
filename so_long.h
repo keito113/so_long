@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 07:58:52 by keitabe           #+#    #+#             */
-/*   Updated: 2025/08/25 09:45:29 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/29 12:28:54 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,22 @@
 # define KEY_A 97
 # define KEY_S 115
 # define KEY_D 100
+
+typedef enum e_errc
+{
+	ERR_GENERIC = 0,
+	ERR_ALLOC,
+	ERR_SYS_OPEN,
+	ERR_SYS_READ,
+	ERR_SYS_CLOSE,
+	ERR_MAP_RECT,
+	ERR_MAP_BORDER,
+	ERR_MAP_PEC,
+	ERR_MAP_PATH,
+	ERR_MLX_INIT,
+	ERR_MLX_WIN,
+	ERR_IMG_LOAD
+}					t_errc;
 
 typedef struct s_rng
 {
@@ -95,7 +111,6 @@ typedef struct s_context
 	t_textures		*tx;
 }					t_context;
 
-void				error_exit(const char *msg);
 int					check_width(const char *filename, int ex_width);
 int					count_lines(const char *filename);
 char				**alloc_map(int height, int width);
@@ -109,12 +124,10 @@ void				validate_path(const t_map *map);
 void				draw_move_count(t_context *ctx);
 void				move_player(int dx, int dy, t_context *ctx);
 
-void				init_graphics(void **mlx_ptr, void **win_ptr, int width,
-						int height);
-void				load_textures(void *mlx_ptr, t_textures *tx);
+void				init_graphics(t_context *ctx, int width, int height);
+void				load_textures(t_context *ctx);
 void				render_map(void *mlx_ptr, void *win_ptr, t_map *map,
 						t_textures *tx);
-void				cleanup_graphics(t_context *ctx);
 int					on_keypress(int keycode, void *param);
 int					on_destroy(void *param);
 void				handle_events(t_context *ctx);
@@ -124,10 +137,8 @@ void				init_player_pos(t_context *ctx);
 
 // gameover
 int					timeout_hook(void *param);
-void				init_end_window(void *mlx_ptr, t_end *go,
-						const char *path, const char *title);
-void				render_gameover(void *mlx_ptr, t_end *go);
-void				cleanup_gameover(void *mlx_ptr, t_end *go);
+void				init_end_window(t_context *ctx, const char *path,
+						const char *title);
 void				handle_end(t_context *ctx, const char *path,
 						const char *title);
 
@@ -139,5 +150,13 @@ void				move_one_enemy(t_context *ctx, int idx);
 void				draw_enemies(t_context *ctx);
 void				init_enemies(t_context *ctx);
 int					enemy_loop_hook(void *param);
+
+// error
+void				destroy_textures(t_context *ctx);
+void				free_map(t_map **pm);
+void				fatal_map(t_map **pm, t_errc code, const char *detail);
+void				die_map(const t_map *map, t_errc code, const char *msg);
+void				app_destroy(t_context *ctx);
+void				fatal(t_context *ctx, t_errc code, const char *detail);
 
 #endif

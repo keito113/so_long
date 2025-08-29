@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 11:23:12 by keitabe           #+#    #+#             */
-/*   Updated: 2025/08/25 12:32:31 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/29 12:28:19 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	draw_move_count(t_context *ctx)
 
 	moves_str = ft_itoa(ctx->moves);
 	if (!moves_str)
-		error_exit("itoa failure");
+		fatal(ctx, ERR_ALLOC, "itoa failure");
 	mlx_string_put(ctx->mlx_ptr, ctx->win_ptr, 10, 10, 0x00FFFFFF, moves_str);
 	free(moves_str);
 }
@@ -46,8 +46,9 @@ static int	pre_move_effects(t_context *ctx, int nx, int ny)
 	}
 	if (ctx->map->date[ny][nx] == 'E' && ctx->collectable == 0)
 	{
-		mlx_string_put(ctx->mlx_ptr, ctx->win_ptr, ctx->player_x, ctx->player_y,
-			0x00FFFFFF, "Have a great camping trip!!");
+		mlx_string_put(ctx->mlx_ptr, ctx->win_ptr, ctx->player_x
+			* ctx->tx->tile_w, ctx->player_y * ctx->tx->tile_h, 0x00FFFFFF,
+			"Have a great camping trip!!");
 		handle_end(ctx, "textures/clear.xpm", "Have a great camping trip!!");
 		return (1);
 	}

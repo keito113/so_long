@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 11:52:51 by keitabe           #+#    #+#             */
-/*   Updated: 2025/08/25 11:43:07 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/29 12:28:46 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	init_enemies(t_context *ctx)
 
 	ctx->enemy_count = count_enemies(ctx);
 	if (gettimeofday(&tv, NULL) < 0)
-		error_exit("gettimeofday failure");
+		fatal(ctx, ERR_GENERIC, "gettimeofday failure");
 	ctx->rng.seed = (int)(tv.tv_sec ^ tv.tv_usec);
 	ctx->last_enemy_move = tv;
 	if (ctx->enemy_count <= 0)
@@ -42,7 +42,7 @@ void	init_enemies(t_context *ctx)
 	}
 	ctx->enemies = malloc(sizeof(t_enemy) * ctx->enemy_count);
 	if (!ctx->enemies)
-		error_exit("Enemy malloc failed");
+		fatal(ctx, ERR_ALLOC, "Enemy malloc failed");
 	fill_enemies(ctx);
 }
 
@@ -72,7 +72,7 @@ int	enemy_loop_hook(void *param)
 		initialized = 1;
 	}
 	if (gettimeofday(&now, NULL) < 0)
-		return (0);
+		fatal(ctx, ERR_GENERIC, "gettimeofday failure");
 	sec_diff = (long)(now.tv_sec - ctx->last_enemy_move.tv_sec);
 	if ((sec_diff > 1) || (sec_diff == 1
 			&& now.tv_usec >= ctx->last_enemy_move.tv_usec))
@@ -82,41 +82,3 @@ int	enemy_loop_hook(void *param)
 	}
 	return (0);
 }
-
-// void	init_enemies(t_context *ctx)
-// {
-// 	ctx->enemy_count = count_enemies(ctx);
-// 	ctx->enemies = malloc(sizeof(t_enemy) * ctx->enemy_count);
-// 	if (ctx->enemies)
-// 		error_exit("Enemy malloc failed");
-// 	fill_enemies(ctx);
-// 	ctx->last_enemy_move = read_uptime_seconds();
-// 	ctx->rng.seed = ctx->last_enemy_move;
-// }
-
-// void	move_enemies(t_context *ctx)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < ctx->enemy_count)
-// 	{
-// 		move_one_enemy(ctx, i);
-// 		i++;
-// 	}
-// }
-
-// int	enemy_loop_hook(void *param)
-// {
-// 	t_context	*ctx;
-// 	int			now;
-
-// 	ctx = (t_context *)param;
-// 	now = read_uptime_seconds();
-// 	if (now - ctx->last_enemy_move >= 1)
-// 	{
-// 		move_enemies(ctx);
-// 		ctx->last_enemy_move = now;
-// 	}
-// 	return (0);
-// }

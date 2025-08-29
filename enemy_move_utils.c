@@ -6,7 +6,7 @@
 /*   By: keitabe <keitabe@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 13:20:14 by keitabe           #+#    #+#             */
-/*   Updated: 2025/08/26 12:36:33 by keitabe          ###   ########.fr       */
+/*   Updated: 2025/08/29 12:28:48 by keitabe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	rng_next(t_context *ctx)
 	b = 12345;
 	m = 2147483648;
 	if (!ctx)
-		error_exit("rng_next: null context");
+		fatal(NULL, ERR_GENERIC, "rng_next: null context");
 	tmp = (long long)ctx->rng.seed * a + b;
 	tmp %= m;
 	if (tmp < 0)
