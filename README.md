@@ -369,8 +369,5 @@ int gettimeofday(struct timeval *tv, struct timezone *tz);
 - `tv_sec` ：秒単位の値を格納
 - `tv_usec` ：マイクロ秒、1,000,000分の1秒単位の値で、0 ~ 999,999の範囲で1秒未満の時間を格納
 
-
 # 描画画像
-
-![Screenshot from 2025-07-29 13-17-32.png](attachment:2ab7e8d1-17d9-4441-b1eb-f5b203f18ac7:Screenshot_from_2025-07-29_13-17-32.png)
-
+<img width="2185" height="428" alt="image" src="https://github.com/user-attachments/assets/89224ae4-3f94-43e9-afbe-cd650fe9176c" />
